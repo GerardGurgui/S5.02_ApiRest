@@ -69,6 +69,12 @@ public class JugadorController {
 
     ////FUNCIONALIDADES JUEGO
 
+        //INICIO JUEGO
+
+
+
+
+
         //JUGADOR REALIZA TIRADA
 
     @PostMapping("/game/tirada/{id}")
@@ -95,7 +101,7 @@ public class JugadorController {
     }
 
     @GetMapping("/ranking/loser")
-    public int mostrarLoser(){
+    public Map<String, Integer> mostrarLoser(){
 
         return jugadorService.porcentajeJugadorLoser();
 
@@ -107,5 +113,6 @@ public class JugadorController {
         return jugadorService.porcentajeJugadorWinner();
 
     }
+
 
 }

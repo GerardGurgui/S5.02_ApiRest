@@ -129,13 +129,13 @@ public class JugadorService {
         //PENDENT BORRAR TIRADAS-- comprobar primero si teine tiradas
         //exception si no tiene
 
-//        Set<Tirada> tiradas = jugadorOpt.get().getTiradas();
-//
-//        for (Tirada tirada : tiradas) {
-//
-//            tiradaRepository.delete(tirada);
-//
-//        }
+        Set<Tirada> tiradas = jugadorOpt.get().getTiradas();
+
+        for (Tirada tirada : tiradas) {
+
+            tiradaRepository.delete(tirada);
+
+        }
 
 
         //TAMPOCO...
@@ -160,6 +160,12 @@ public class JugadorService {
 
 
     ////FUNCIONALIDADES JUEGO
+
+    //INICIO JUEGO
+
+
+
+
     //TIRAR DADOS - REGISTRO TIRADAS - PORCENTAJE
     public Jugador realizarTirada(Long id) {
 
@@ -244,7 +250,7 @@ public class JugadorService {
     }
 
 
-    public int porcentajeJugadorLoser() {
+    public Map<String, Integer> porcentajeJugadorLoser() {
 
         List<Jugador> jugadores = findAllPlayers();
 

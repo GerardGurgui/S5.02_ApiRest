@@ -4,27 +4,21 @@ import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Juga
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Tirada;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.ExistentUserNameException;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.service.JugadorService;
-import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Component
+//CONTROLLER OR COMPONENT??
+@Controller
 public class GameFunctions {
 
     private static final Logger log = LoggerFactory.getLogger(JugadorService.class);
 
-
-    public static void inicioJuego(){
-
-
-
-    }
 
 
     public static void validarNombre(String nombre, List<Jugador> jugadores){
@@ -34,7 +28,6 @@ public class GameFunctions {
         while (i < jugadores.size()){
 
             if (jugadores.get(i).getNombre().equals(nombre)){
-
 
                 throw new ExistentUserNameException("El nombre de usuario ya existe");
             }
@@ -129,7 +122,7 @@ public class GameFunctions {
 
         for (Jugador jugador : jugadores) {
 
-            acierto = jugador.getAcierto();
+            acierto = calcularPorcentajeJugador(jugador);
 
             jugadoresAcierto.put(jugador.getNombre(),acierto);
 
@@ -140,6 +133,8 @@ public class GameFunctions {
     }
 
     public static int calcularPorcentajeMedio(List<Jugador> jugadores){
+
+        //MAL, NO FUNCA BIEN
 
         Set<Tirada> totalTiradas;
 
@@ -156,76 +151,71 @@ public class GameFunctions {
 
     }
 
-    public static int calcularPorcentajeLoser(List<Jugador> jugadores){
+
+    public static Map<String, Integer> calcularPorcentajeLoser(List<Jugador> jugadores){
 
 
-        Map<String,Integer> jugadaresAcierto = calcularPorcentajeJugadores(jugadores);
+        Map<String,Integer> jugadoresAciertos = calcularPorcentajeJugadores(jugadores);
+
+        //OTRO HASHMAP PARA GUARDAR SOLO EL JUGADOR GANADOR (NO PUEDO 2 RETURNS EN CONTROLLER)
+        Map<String,Integer> jugadorAcierto = new HashMap<>();
 
         int porcentajeMinimo = 100;
-        int porcentajeMaximo = 0;
+        String nombreGanador = " ";
 
-        for (Integer porcentaje : jugadaresAcierto.values()) {
 
-            if (porcentaje > porcentajeMaximo){
-                porcentajeMaximo = porcentaje;
+        //CALCULO EL PORCENTAJE MAYOR CON EL NOMBRE CORRESPONDIENTE, MACHACA Y GUARDO EN NUEVO HASHMAP
+
+        for (Map.Entry<String, Integer> jugadoresAciertosIter : jugadoresAciertos.entrySet()) {
+
+            if (jugadoresAciertosIter.getValue() < porcentajeMinimo){
+
+                nombreGanador = jugadoresAciertosIter.getKey();
+                porcentajeMinimo = jugadoresAciertosIter.getValue();
+
             }
-
-            if (porcentaje < porcentajeMinimo){
-                 porcentajeMinimo = porcentaje;
-            }
-
         }
 
-        log.info("Percentatge mes gran " +porcentajeMaximo);
-        log.info("Percentatge mes petit " +porcentajeMinimo);
+        jugadorAcierto.put(nombreGanador,porcentajeMinimo);
 
-        return porcentajeMinimo;
+        log.info("Jugador porcentaje maximo: " +nombreGanador+ " " +porcentajeMinimo);
+
+        return jugadorAcierto;
+
+
     }
 
     public static Map<String,Integer> calcularPorcentajeWinner(List<Jugador> jugadores){
 
+        //OBTENER LA LISTA DE JUGADORES CON SUS PORCENTAJES LLAMANDO AL METODO QUE LOS CALCULA
 
-        Map<String,Integer> jugadaresAcierto = calcularPorcentajeJugadores(jugadores);
+        Map<String,Integer> jugadoresAciertos = calcularPorcentajeJugadores(jugadores);
 
-        int porcentajeMinimo = 100;
+        //OTRO HASHMAP PARA GUARDAR SOLO EL JUGADOR GANADOR (NO PUEDO 2 RETURNS EN CONTROLLER)
+        Map<String,Integer> jugadorAcierto = new HashMap<>();
+
+
         int porcentajeMaximo = 0;
         String nombreGanador = " ";
-        String nombrePerdeor = " ";
-
-//        for (Integer porcentaje : jugadaresAcierto.values()) {
-//
-//            if (porcentaje > porcentajeMaximo){
-//                porcentajeMaximo = porcentaje;
-//            }
-//
-//            if (porcentaje < porcentajeMinimo){
-//                porcentajeMinimo = porcentaje;
-//            }
-//
-//        }
 
 
-        for (Map.Entry<String, Integer> nombreAcierto : jugadaresAcierto.entrySet()) {
+        //CALCULO EL PORCENTAJE MAYOR CON EL NOMBRE CORRESPONDIENTE, MACHACA Y GUARDO EN NUEVO HASHMAP
 
+        for (Map.Entry<String, Integer> jugadoresAciertosIter : jugadoresAciertos.entrySet()) {
 
-            if (nombreAcierto.getValue() > porcentajeMaximo){
+            if (jugadoresAciertosIter.getValue() > porcentajeMaximo){
 
-                nombreGanador = nombreAcierto.getKey();
-                porcentajeMaximo = nombreAcierto.getValue();
+                nombreGanador = jugadoresAciertosIter.getKey();
+                porcentajeMaximo = jugadoresAciertosIter.getValue();
+
             }
-
-            if (nombreAcierto.getValue() < porcentajeMinimo){
-
-                nombrePerdeor = nombreAcierto.getKey();
-                porcentajeMinimo = nombreAcierto.getValue();
-            }
-
         }
 
-        log.info("Jugador porcentaje maximo: " +nombreGanador+ " " +porcentajeMaximo);
-        log.info("Jugador porcentaje mínimo: " +nombrePerdeor+ " "+porcentajeMinimo);
+        jugadorAcierto.put(nombreGanador,porcentajeMaximo);
 
-        return jugadaresAcierto;
+        log.info("Jugador porcentaje maximo: " +nombreGanador+ " " +porcentajeMaximo);
+
+        return jugadorAcierto;
     }
 
 }
