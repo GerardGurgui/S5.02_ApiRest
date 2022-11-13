@@ -3,6 +3,8 @@ package cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.service;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.DTO.JugadorDTO;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Jugador;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Tirada;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.ExistentEmailException;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.ExistentUserNameException;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.IdPlayerException;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.PlayerNotFoundException;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.game.GameFunctions;
@@ -11,7 +13,6 @@ import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.repositories.
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.repositories.TiradaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -44,16 +45,13 @@ public class JugadorService {
 
         Jugador jugadorEntity = dtoToPlayer.map(jugadorDtoNew);
 
-        if (jugadorEntity.getId() != null) {
+        boolean existe = jugadorRepository.existsByUsername(jugadorEntity.getUsername());
 
-            throw new IdPlayerException("EL nuevo jugador no puede contener un valor ID");
+        if (existe && !jugadorEntity.getUsername().equalsIgnoreCase("Anónimo")){
+
+            throw new ExistentUserNameException("El nombre del jugador ya existe");
 
         }
-
-        //COMPROBAR NOMBRE REPETIDO AL CREAR
-        List<Jugador> jugadores = findAllPlayers();
-        GameFunctions.validarNombre(jugadorEntity.getNombre(), jugadores);
-
 
         log.info("Jugador creado correctamente");
 
@@ -88,7 +86,16 @@ public class JugadorService {
 
     public Jugador update(JugadorDTO jugadorDTO, Long id) {
 
-        //--> comprobar comportamiento con exceptions
+        if (jugadorRepository.existsByUsername(jugadorDTO.getUsername())){
+
+            throw new ExistentUserNameException("El nombre del jugador ya existe");
+        }
+
+        if (jugadorRepository.existsByEmail(jugadorDTO.getEmail())){
+
+            throw new ExistentEmailException("El email ya existe");
+        }
+
         if (id == null) {
 
             throw new IdPlayerException("El id del jugador a actualizar no puede ser nulo");
@@ -102,10 +109,9 @@ public class JugadorService {
         Optional<Jugador> jugadorOpt = jugadorRepository.findById(id);
 
         //ACTUALIZAMOS LOS ATRIBUTOS QUE SE PUEDEN INTRODUCIR EL USUARIO
-        jugadorOpt.get().setNombre(jugadorDTO.getNombre());
+        jugadorOpt.get().setUsername(jugadorDTO.getUsername());
         //EN PRINCIPI NOMES NOM
         jugadorOpt.get().setEmail(jugadorDTO.getEmail());
-        jugadorOpt.get().setPais(jugadorDTO.getPais());
 
 
         return jugadorRepository.save(jugadorOpt.get());
@@ -228,7 +234,7 @@ public class JugadorService {
     }
 
 
-    //// PORCENTAJES -- CODIGO EN EL SERVICIO MISMO CREO
+    //// PORCENTAJES
     public Map<String, Integer> porcentajeJugadores() {
 
         //EXCEPTION DE SI TIENE TIRADAS O NO???

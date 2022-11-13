@@ -3,7 +3,6 @@ package cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,16 +16,14 @@ public class Jugador {
     private Long id;
 
     @NotNull
-    private String nombre;
+    private String username;
     private String email; //supuestamente recibe calificaciones en email, será DTO
-    private String pais; //para tema servidores
-
     private int puntuacion;
     private int victoria;
 
     @Column(name = "porcentaje_acierto")
     private int acierto;
-    private String contrasenya; // PER ENCRIPTAR SI DONA TEMPS
+    private String password; // PER ENCRIPTAR SI DONA TEMPS
 
     @Column(name = "fecha_registro")
     private LocalDate fechaRegistro;
@@ -42,11 +39,10 @@ public class Jugador {
     public Jugador() {
     }
 
-    public Jugador(String nombre,String email, String pais) {
-        this.nombre = nombre;
+    public Jugador(String username, String email, String password){
+        this.username = username;
         this.email = email;
-        this.pais = pais;
-
+        this.password = password;
     }
 
     ////
@@ -59,12 +55,12 @@ public class Jugador {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -73,14 +69,6 @@ public class Jugador {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
     }
 
 
@@ -124,12 +112,12 @@ public class Jugador {
         this.victoria = victoria;
     }
 
-    public String getContrasenya() {
-        return contrasenya;
+    public String getPassword() {
+        return password;
     }
 
-    public void setContrasenya(String contrasenya) {
-        this.contrasenya = contrasenya;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     ////

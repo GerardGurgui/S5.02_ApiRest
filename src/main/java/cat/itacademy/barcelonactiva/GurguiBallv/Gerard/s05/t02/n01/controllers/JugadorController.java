@@ -24,16 +24,18 @@ public class JugadorController {
     ////----> CRUD
 
         //--> CREATE
-    @PostMapping("/add")
-    public ResponseEntity<Jugador> addPlayer(@RequestBody JugadorDTO jugadorDTO){
+    //SUSTITUIR POR REGISTER DE AUTHCONTROLLER??
 
-        return new ResponseEntity<>(jugadorService.createPlayer(jugadorDTO), HttpStatus.CREATED);
-
-    }
+//    @PostMapping("/add")
+//    public ResponseEntity<Jugador> addPlayer(@RequestBody JugadorDTO jugadorDTO){
+//
+//        return new ResponseEntity<>(jugadorService.createPlayer(jugadorDTO), HttpStatus.CREATED);
+//
+//    }
 
 
         //--> READ
-    @GetMapping("/findAll")
+    @GetMapping("/get/findAll")
     public List<Jugador> getAllPlayers(){
 
         return jugadorService.findAllPlayers();
@@ -41,7 +43,7 @@ public class JugadorController {
     }
 
 
-    @GetMapping("/findOne/{id}")
+    @GetMapping("/get/findOne/{id}")
     public ResponseEntity<Jugador> getOnePlayer(@PathVariable Long id){
 
         return ResponseEntity.ok(jugadorService.getOne(id));
@@ -86,28 +88,28 @@ public class JugadorController {
 
 
         //LISTA DE PORCENTAJE DE CADA JUGADOR
-    @GetMapping("/porcentajes/jugadores")
+    @GetMapping("/get/porcentajes/jugadores")
     public Map<String,Integer> mostrarPorcentajes(){
 
         return jugadorService.porcentajeJugadores();
     }
 
     //EL PORCENTAJE MEDIO TOTAL DE LOS JUGADORES
-    @GetMapping("/ranking")
+    @GetMapping("/get/ranking")
     public int mostrarPorcentajeMediaTotal(){
 
        return jugadorService.porcentajeMediaTotal();
 
     }
 
-    @GetMapping("/ranking/loser")
+    @GetMapping("/get/ranking/loser")
     public Map<String, Integer> mostrarLoser(){
 
         return jugadorService.porcentajeJugadorLoser();
 
     }
 
-    @GetMapping("/ranking/winner")
+    @GetMapping("/get/ranking/winner")
     public Map<String, Integer> mostrarWinner(){
 
         return jugadorService.porcentajeJugadorWinner();

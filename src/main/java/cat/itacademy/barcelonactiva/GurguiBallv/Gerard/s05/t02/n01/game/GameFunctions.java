@@ -6,6 +6,7 @@ import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.Ex
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.service.JugadorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.util.HashMap;
@@ -13,28 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-//CONTROLLER OR COMPONENT??
-@Controller
+@Component
 public class GameFunctions {
 
     private static final Logger log = LoggerFactory.getLogger(JugadorService.class);
 
-
-
-    public static void validarNombre(String nombre, List<Jugador> jugadores){
-
-        int i = 0;
-
-        while (i < jugadores.size()){
-
-            if (jugadores.get(i).getNombre().equals(nombre)){
-
-                throw new ExistentUserNameException("El nombre de usuario ya existe");
-            }
-
-            i++;
-        }
-    }
 
 
     public static Tirada tirarDados(){
@@ -124,7 +108,7 @@ public class GameFunctions {
 
             acierto = calcularPorcentajeJugador(jugador);
 
-            jugadoresAcierto.put(jugador.getNombre(),acierto);
+            jugadoresAcierto.put(jugador.getUsername(),acierto);
 
         }
 
@@ -157,7 +141,7 @@ public class GameFunctions {
 
         Map<String,Integer> jugadoresAciertos = calcularPorcentajeJugadores(jugadores);
 
-        //OTRO HASHMAP PARA GUARDAR SOLO EL JUGADOR GANADOR (NO PUEDO 2 RETURNS EN CONTROLLER)
+        //OTRO HASHMAP PARA GUARDAR SOLO EL JUGADOR GANADOR
         Map<String,Integer> jugadorAcierto = new HashMap<>();
 
         int porcentajeMinimo = 100;
@@ -188,12 +172,10 @@ public class GameFunctions {
     public static Map<String,Integer> calcularPorcentajeWinner(List<Jugador> jugadores){
 
         //OBTENER LA LISTA DE JUGADORES CON SUS PORCENTAJES LLAMANDO AL METODO QUE LOS CALCULA
-
         Map<String,Integer> jugadoresAciertos = calcularPorcentajeJugadores(jugadores);
 
-        //OTRO HASHMAP PARA GUARDAR SOLO EL JUGADOR GANADOR (NO PUEDO 2 RETURNS EN CONTROLLER)
+        //OTRO HASHMAP PARA GUARDAR SOLO EL JUGADOR GANADOR
         Map<String,Integer> jugadorAcierto = new HashMap<>();
-
 
         int porcentajeMaximo = 0;
         String nombreGanador = " ";

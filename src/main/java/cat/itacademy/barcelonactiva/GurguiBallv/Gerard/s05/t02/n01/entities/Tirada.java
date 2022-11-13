@@ -2,7 +2,6 @@ package cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities;
 
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 
 @Entity
