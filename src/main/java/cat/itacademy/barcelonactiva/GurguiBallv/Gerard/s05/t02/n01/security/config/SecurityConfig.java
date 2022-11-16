@@ -80,15 +80,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // CORS (Cross-origin resource sharing)
         //desactivar cross-cheking, error 403 con metodos POST
         http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
-//                .antMatchers("/").permitAll()
-                .antMatchers("/players/get/**").permitAll()
                 .anyRequest().authenticated();
-
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }

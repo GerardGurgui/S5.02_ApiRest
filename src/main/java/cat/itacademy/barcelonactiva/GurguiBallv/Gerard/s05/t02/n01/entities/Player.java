@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "jugadores")
-public class Jugador {
+public class Player {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,13 +33,13 @@ public class Jugador {
     @OneToMany(cascade = CascadeType.ALL,
                fetch = FetchType.LAZY)
     @JoinColumn(name = "id_jugador", referencedColumnName = "id")
-    private Set<Tirada> tiradas;
+    private Set<Launch> launches;
 
 
-    public Jugador() {
+    public Player() {
     }
 
-    public Jugador(String username, String email, String password){
+    public Player(String username, String email, String password){
         this.username = username;
         this.email = email;
         this.password = password;
@@ -88,12 +88,12 @@ public class Jugador {
         this.puntuacion = puntuacion;
     }
 
-    public Set<Tirada> getTiradas() {
-        return tiradas;
+    public Set<Launch> getTiradas() {
+        return launches;
     }
 
-    public void setTiradas(Set<Tirada> tiradas) {
-        this.tiradas = tiradas;
+    public void setTiradas(Set<Launch> launches) {
+        this.launches = launches;
     }
 
     public int getVictoria() {
@@ -121,13 +121,13 @@ public class Jugador {
     }
 
     ////
-    public void addTirada(Tirada tirada){
+    public void addTirada(Launch launch){
 
-        if (tiradas == null){
-            tiradas = new HashSet<>();
+        if (launches == null){
+            launches = new HashSet<>();
         }
 
-        tiradas.add(tirada);
+        launches.add(launch);
 
 //        tirada.setJugador(this);
 

@@ -1,13 +1,11 @@
 package cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.game;
 
-import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Jugador;
-import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Tirada;
-import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.ExistentUserNameException;
-import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.service.JugadorService;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Player;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Launch;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.service.PlayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,25 +15,25 @@ import java.util.Set;
 @Component
 public class GameFunctions {
 
-    private static final Logger log = LoggerFactory.getLogger(JugadorService.class);
+    private static final Logger log = LoggerFactory.getLogger(PlayerService.class);
 
 
 
-    public static Tirada tirarDados(){
+    public static Launch tirarDados(){
 
-        Tirada tirada = new Tirada();
+        Launch launch = new Launch();
 
         int dado1 = numRandom();
-        tirada.setDado1(dado1);
+        launch.setDado1(dado1);
 
         int dado2 = numRandom();
-        tirada.setDado2(dado2);
+        launch.setDado2(dado2);
 
         int resultado = dado1 + dado2;
 
-        tirada.setResultadoTirada(resultado);
+        launch.setResultadoTirada(resultado);
 
-        return tirada;
+        return launch;
 
     }
 
@@ -61,15 +59,15 @@ public class GameFunctions {
         return ganadorRonda;
     }
 
-    public static boolean sumarPuntuacionRonda(Jugador jugador){
+    public static boolean sumarPuntuacionRonda(Player player){
 
         boolean ganadorPartida = false;
 
-        int puntuacionTotal = jugador.getPuntuacion();
+        int puntuacionTotal = player.getPuntuacion();
         puntuacionTotal++;
-        jugador.setPuntuacion(puntuacionTotal);
+        player.setPuntuacion(puntuacionTotal);
 
-        if (jugador.getPuntuacion() == 3){
+        if (player.getPuntuacion() == 3){
             ganadorPartida = true;
         }
 
@@ -81,7 +79,7 @@ public class GameFunctions {
     ////PORCENTAJES-ESTADISTICAS
 
     //(TOTAL TIRADAS * LAS QUE SE HAN GANADO / JUGADORES)*100
-    public static int calcularPorcentajeJugador(Jugador jugador){
+    public static int calcularPorcentajeJugador(Player player){
 
         //calcular porcentaje
             //necesito la puntuación (cuantos 7 ha sacado)
@@ -89,26 +87,26 @@ public class GameFunctions {
         //recorrer lista tiradas??
 
         //comparar total puntuacion con total tiradas??
-        int puntuacion = jugador.getPuntuacion();
+        int puntuacion = player.getPuntuacion();
 
-        int tiradasRealizadas = jugador.getTiradas().size();
+        int tiradasRealizadas = player.getTiradas().size();
 
         return (puntuacion * 100)/ tiradasRealizadas;
 
     }
 
 
-    public static Map<String,Integer> calcularPorcentajeJugadores(List<Jugador> jugadores){
+    public static Map<String,Integer> calcularPorcentajeJugadores(List<Player> jugadores){
 
         Map<String,Integer> jugadoresAcierto = new HashMap<>();
 
         int acierto;
 
-        for (Jugador jugador : jugadores) {
+        for (Player player : jugadores) {
 
-            acierto = calcularPorcentajeJugador(jugador);
+            acierto = calcularPorcentajeJugador(player);
 
-            jugadoresAcierto.put(jugador.getUsername(),acierto);
+            jugadoresAcierto.put(player.getUsername(),acierto);
 
         }
 
@@ -116,18 +114,18 @@ public class GameFunctions {
 
     }
 
-    public static int calcularPorcentajeMedio(List<Jugador> jugadores){
+    public static int calcularPorcentajeMedio(List<Player> jugadores){
 
         //MAL, NO FUNCA BIEN
 
-        Set<Tirada> totalTiradas;
+        Set<Launch> totalLaunches;
 
         int total = 0;
 
-        for (Jugador jugadorsIter : jugadores) {
+        for (Player jugadorsIter : jugadores) {
 
-            totalTiradas = jugadorsIter.getTiradas();
-            total += totalTiradas.size();
+            totalLaunches = jugadorsIter.getTiradas();
+            total += totalLaunches.size();
 
         }
 
@@ -136,7 +134,7 @@ public class GameFunctions {
     }
 
 
-    public static Map<String, Integer> calcularPorcentajeLoser(List<Jugador> jugadores){
+    public static Map<String, Integer> calcularPorcentajeLoser(List<Player> jugadores){
 
 
         Map<String,Integer> jugadoresAciertos = calcularPorcentajeJugadores(jugadores);
@@ -169,7 +167,7 @@ public class GameFunctions {
 
     }
 
-    public static Map<String,Integer> calcularPorcentajeWinner(List<Jugador> jugadores){
+    public static Map<String,Integer> calcularPorcentajeWinner(List<Player> jugadores){
 
         //OBTENER LA LISTA DE JUGADORES CON SUS PORCENTAJES LLAMANDO AL METODO QUE LOS CALCULA
         Map<String,Integer> jugadoresAciertos = calcularPorcentajeJugadores(jugadores);

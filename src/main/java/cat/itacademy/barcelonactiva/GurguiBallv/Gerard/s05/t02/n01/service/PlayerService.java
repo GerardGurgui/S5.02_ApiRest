@@ -1,16 +1,16 @@
 package cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.service;
 
-import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.DTO.JugadorDTO;
-import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Jugador;
-import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Tirada;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.DTO.PlayerDTO;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Player;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Launch;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.ExistentEmailException;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.ExistentUserNameException;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.IdPlayerException;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.PlayerNotFoundException;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.game.GameFunctions;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.mapper.DtoToPlayer;
-import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.repositories.JugadorRepository;
-import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.repositories.TiradaRepository;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.repositories.PlayerRepository;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.repositories.LaunchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,36 +18,38 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class JugadorService {
+public class PlayerService {
 
-    private final Logger log = LoggerFactory.getLogger(JugadorService.class);
+    private final Logger log = LoggerFactory.getLogger(PlayerService.class);
 
 
     //INYECCIONES POR CONSTRUCTOR, FINAL POR INMUTABLE??
-    private final JugadorRepository jugadorRepository;
+    private final PlayerRepository playerRepository;
 
-    private final TiradaRepository tiradaRepository;
+    private final LaunchRepository launchRepository;
 
     private final DtoToPlayer dtoToPlayer;
 
 
-    public JugadorService(JugadorRepository jugadorRepository, TiradaRepository tiradaRepository,
-                          DtoToPlayer dtoToPlayer) {
-        this.jugadorRepository = jugadorRepository;
-        this.tiradaRepository = tiradaRepository;
+    public PlayerService(PlayerRepository playerRepository, LaunchRepository launchRepository,
+                         DtoToPlayer dtoToPlayer) {
+        this.playerRepository = playerRepository;
+        this.launchRepository = launchRepository;
         this.dtoToPlayer = dtoToPlayer;
     }
 
 
     ////CRUD
     //--> CREATE
-    public Jugador createPlayer(JugadorDTO jugadorDtoNew) {
+    public Player createPlayer(PlayerDTO playerDtoNew) {
 
-        Jugador jugadorEntity = dtoToPlayer.map(jugadorDtoNew);
+        //MAPEAR DE DTO A ENTIDAD (COMPROBAR NOMBRE VACÍO)
+        Player playerEntity = dtoToPlayer.map(playerDtoNew);
 
-        boolean existe = jugadorRepository.existsByUsername(jugadorEntity.getUsername());
+        //COMPROBAR SI YA EXISTE ESE JUGADOR O NO
+        boolean existe = playerRepository.existsByUsername(playerEntity.getUsername());
 
-        if (existe && !jugadorEntity.getUsername().equalsIgnoreCase("Anónimo")){
+        if (existe && !playerEntity.getUsername().equalsIgnoreCase("Anónimo")){
 
             throw new ExistentUserNameException("El nombre del jugador ya existe");
 
@@ -55,21 +57,22 @@ public class JugadorService {
 
         log.info("Jugador creado correctamente");
 
-        return jugadorRepository.save(jugadorEntity);
+        return playerRepository.save(playerEntity);
 
     }
+
 
 
     //--> READ
-    public List<Jugador> findAllPlayers() {
+    public List<Player> findAllPlayers() {
 
-        return jugadorRepository.findAll();
+        return playerRepository.findAll();
 
     }
 
-    public Jugador getOne(Long id) {
+    public Player getOne(Long id) {
 
-        Optional<Jugador> jugadorOpt = jugadorRepository.findById(id);
+        Optional<Player> jugadorOpt = playerRepository.findById(id);
 
 
         if (jugadorOpt.isEmpty()) {
@@ -84,14 +87,14 @@ public class JugadorService {
 
     //--> UPDATE
 
-    public Jugador update(JugadorDTO jugadorDTO, Long id) {
+    public Player update(PlayerDTO playerDTO, Long id) {
 
-        if (jugadorRepository.existsByUsername(jugadorDTO.getUsername())){
+        if (playerRepository.existsByUsername(playerDTO.getUsername())){
 
             throw new ExistentUserNameException("El nombre del jugador ya existe");
         }
 
-        if (jugadorRepository.existsByEmail(jugadorDTO.getEmail())){
+        if (playerRepository.existsByEmail(playerDTO.getEmail())){
 
             throw new ExistentEmailException("El email ya existe");
         }
@@ -101,20 +104,20 @@ public class JugadorService {
             throw new IdPlayerException("El id del jugador a actualizar no puede ser nulo");
         }
 
-        if (!jugadorRepository.existsById(id)) {
+        if (!playerRepository.existsById(id)) {
 
             throw new PlayerNotFoundException("El jugador no existe");
         }
 
-        Optional<Jugador> jugadorOpt = jugadorRepository.findById(id);
+        Optional<Player> jugadorOpt = playerRepository.findById(id);
 
         //ACTUALIZAMOS LOS ATRIBUTOS QUE SE PUEDEN INTRODUCIR EL USUARIO
-        jugadorOpt.get().setUsername(jugadorDTO.getUsername());
-        //EN PRINCIPI NOMES NOM
-        jugadorOpt.get().setEmail(jugadorDTO.getEmail());
+        jugadorOpt.get().setUsername(playerDTO.getUsername());
+//        //EN PRINCIPI NOMES NOM
+//        jugadorOpt.get().setEmail(jugadorDTO.getEmail());
 
 
-        return jugadorRepository.save(jugadorOpt.get());
+        return playerRepository.save(jugadorOpt.get());
 
     }
 
@@ -123,7 +126,7 @@ public class JugadorService {
     //--> DELETE TIRADAS 1 JUGADOR
     public void deleteTiradas(Long id) {
 
-        Optional<Jugador> jugadorOpt = jugadorRepository.findById(id);
+        Optional<Player> jugadorOpt = playerRepository.findById(id);
 
         if (jugadorOpt.isEmpty()) {
 
@@ -135,11 +138,11 @@ public class JugadorService {
         //PENDENT BORRAR TIRADAS-- comprobar primero si teine tiradas
         //exception si no tiene
 
-        Set<Tirada> tiradas = jugadorOpt.get().getTiradas();
+        Set<Launch> launches = jugadorOpt.get().getTiradas();
 
-        for (Tirada tirada : tiradas) {
+        for (Launch launch : launches) {
 
-            tiradaRepository.delete(tirada);
+            launchRepository.delete(launch);
 
         }
 
@@ -170,66 +173,64 @@ public class JugadorService {
     //INICIO JUEGO
 
 
-
-
     //TIRAR DADOS - REGISTRO TIRADAS - PORCENTAJE
-    public Jugador realizarTirada(Long id) {
+    public Player realizarTirada(Long id) {
 
-        Optional<Jugador> jugadorOpt = jugadorRepository.findById(id);
+        Optional<Player> jugadorOpt = playerRepository.findById(id);
 
         //CAMBIAR POR EXCEPTION
         if (jugadorOpt.isEmpty()) {
             log.warn("no existe el jugador");
         }
 
-        Jugador jugador = jugadorOpt.get();
+        Player player = jugadorOpt.get();
 
         //TIRA DADOS
-        Tirada tirada = GameFunctions.tirarDados();
+        Launch launch = GameFunctions.tirarDados();
 
         //COMPROBACIONES PUNTUACION
-        comprobarTirada(jugador, tirada);
+        comprobarTirada(player, launch);
 
         //ASIGNAR TIRADA Y PORCENTAJES
-        asignarTirada(jugador, tirada);
+        asignarTirada(player, launch);
 
-        return jugador;
+        return player;
 
     }
 
-    public void comprobarTirada(Jugador jugador, Tirada tirada) {
+    public void comprobarTirada(Player player, Launch launch) {
 
 
         //COMPRUEBA SUMA DE LA TIRADA
-        boolean ganadorRonda = GameFunctions.comprobarTirada(tirada.getResultadoTirada());
+        boolean ganadorRonda = GameFunctions.comprobarTirada(launch.getResultadoTirada());
 
 
         //COMPRUEBA TOTAL RONDAS GANADAS
         if (ganadorRonda) {
 
-            boolean ganadorPartida = GameFunctions.sumarPuntuacionRonda(jugador);
-            jugador.setAcierto(100);
+            boolean ganadorPartida = GameFunctions.sumarPuntuacionRonda(player);
+            player.setAcierto(100);
 
             if (ganadorPartida) {
-                jugador.setVictoria(1);
+                player.setVictoria(1);
                 //ALGO QUE ACABE EL JUEGO
             }
 
         } else {
-            jugador.setAcierto(0);
+            player.setAcierto(0);
         }
 
     }
 
-    public void asignarTirada(Jugador jugador, Tirada tirada) {
+    public void asignarTirada(Player player, Launch launch) {
 
-        jugador.addTirada(tirada);
+        player.addTirada(launch);
 
-        int porcentaje = GameFunctions.calcularPorcentajeJugador(jugador);
-        jugador.setAcierto(porcentaje);
+        int porcentaje = GameFunctions.calcularPorcentajeJugador(player);
+        player.setAcierto(porcentaje);
 
         //HACE FALTA?? ES RARO, CON JUGADOR DESDE EL MAIN YA SE GUARDA POR LA RELACION
-        tiradaRepository.save(tirada);
+        launchRepository.save(launch);
 
     }
 
@@ -239,7 +240,7 @@ public class JugadorService {
 
         //EXCEPTION DE SI TIENE TIRADAS O NO???
 
-        List<Jugador> jugadores = findAllPlayers();
+        List<Player> jugadores = findAllPlayers();
 
         return GameFunctions.calcularPorcentajeJugadores(jugadores);
 
@@ -249,7 +250,7 @@ public class JugadorService {
     public int porcentajeMediaTotal() {
 
         //TOTAL TIRADAS TOTS ELS JUGADORS * 100 / NUM JUGADORS
-        List<Jugador> jugadores = findAllPlayers();
+        List<Player> jugadores = findAllPlayers();
 
         return GameFunctions.calcularPorcentajeMedio(jugadores);
 
@@ -258,7 +259,7 @@ public class JugadorService {
 
     public Map<String, Integer> porcentajeJugadorLoser() {
 
-        List<Jugador> jugadores = findAllPlayers();
+        List<Player> jugadores = findAllPlayers();
 
         return GameFunctions.calcularPorcentajeLoser(jugadores);
 
@@ -266,7 +267,7 @@ public class JugadorService {
 
     public Map<String, Integer> porcentajeJugadorWinner() {
 
-        List<Jugador> jugadores = findAllPlayers();
+        List<Player> jugadores = findAllPlayers();
 
         return GameFunctions.calcularPorcentajeWinner(jugadores);
 
