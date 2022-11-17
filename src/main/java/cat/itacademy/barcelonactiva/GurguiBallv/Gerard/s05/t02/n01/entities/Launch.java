@@ -17,7 +17,6 @@ public class Launch {
     private int resultadoTirada;
 
 
-
     public Launch() {
     }
 
@@ -53,6 +52,7 @@ public class Launch {
         this.resultadoTirada = resultadoTirada;
     }
 
+    // MILLOR TIRAR DADOS EN LA PROPIA CLASE DADOS
 
 
 }

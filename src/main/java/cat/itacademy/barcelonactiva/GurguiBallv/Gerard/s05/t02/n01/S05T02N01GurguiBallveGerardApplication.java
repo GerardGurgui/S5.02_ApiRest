@@ -30,7 +30,6 @@ public class S05T02N01GurguiBallveGerardApplication {
 		PlayerRepository playerRepository = context.getBean(PlayerRepository.class);
 		LaunchRepository launchRepository = context.getBean(LaunchRepository.class);
 
-
 	}
 
 }

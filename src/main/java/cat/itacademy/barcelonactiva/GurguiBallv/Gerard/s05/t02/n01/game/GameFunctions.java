@@ -2,9 +2,11 @@ package cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.game;
 
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Player;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Launch;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.security.payload.MessageResponse;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.service.PlayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -16,8 +18,6 @@ import java.util.Set;
 public class GameFunctions {
 
     private static final Logger log = LoggerFactory.getLogger(PlayerService.class);
-
-
 
     public static Launch tirarDados(){
 
@@ -197,5 +197,7 @@ public class GameFunctions {
 
         return jugadorAcierto;
     }
+
+
 
 }

@@ -13,6 +13,7 @@ import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.repositories.
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.repositories.LaunchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -23,20 +24,14 @@ public class PlayerService {
     private final Logger log = LoggerFactory.getLogger(PlayerService.class);
 
 
-    //INYECCIONES POR CONSTRUCTOR, FINAL POR INMUTABLE??
-    private final PlayerRepository playerRepository;
+    @Autowired
+    private PlayerRepository playerRepository;
 
-    private final LaunchRepository launchRepository;
+    @Autowired
+    private LaunchRepository launchRepository;
 
-    private final DtoToPlayer dtoToPlayer;
-
-
-    public PlayerService(PlayerRepository playerRepository, LaunchRepository launchRepository,
-                         DtoToPlayer dtoToPlayer) {
-        this.playerRepository = playerRepository;
-        this.launchRepository = launchRepository;
-        this.dtoToPlayer = dtoToPlayer;
-    }
+    @Autowired
+    private DtoToPlayer dtoToPlayer;
 
 
     ////CRUD
@@ -147,8 +142,6 @@ public class PlayerService {
         }
 
 
-        //TAMPOCO...
-
 //        Long ids;
 //
 //        for (Tirada tirada : jugadorOpt.get().getTiradas()) {
@@ -172,6 +165,7 @@ public class PlayerService {
 
     //INICIO JUEGO
 
+    //REVISAR TIRAR DADOS FUERA DEL SERIVICO
 
     //TIRAR DADOS - REGISTRO TIRADAS - PORCENTAJE
     public Player realizarTirada(Long id) {
@@ -195,7 +189,6 @@ public class PlayerService {
         asignarTirada(player, launch);
 
         return player;
-
     }
 
     public void comprobarTirada(Player player, Launch launch) {
@@ -213,7 +206,6 @@ public class PlayerService {
 
             if (ganadorPartida) {
                 player.setVictoria(1);
-                //ALGO QUE ACABE EL JUEGO
             }
 
         } else {
@@ -229,7 +221,6 @@ public class PlayerService {
         int porcentaje = GameFunctions.calcularPorcentajeJugador(player);
         player.setAcierto(porcentaje);
 
-        //HACE FALTA?? ES RARO, CON JUGADOR DESDE EL MAIN YA SE GUARDA POR LA RELACION
         launchRepository.save(launch);
 
     }
@@ -237,8 +228,6 @@ public class PlayerService {
 
     //// PORCENTAJES
     public Map<String, Integer> porcentajeJugadores() {
-
-        //EXCEPTION DE SI TIENE TIRADAS O NO???
 
         List<Player> jugadores = findAllPlayers();
 

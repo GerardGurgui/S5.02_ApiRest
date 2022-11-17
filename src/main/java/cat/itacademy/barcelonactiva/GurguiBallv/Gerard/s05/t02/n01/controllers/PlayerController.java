@@ -3,6 +3,7 @@ package cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.controllers;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.DTO.PlayerDTO;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Player;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.service.PlayerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +15,8 @@ import java.util.Map;
 @RequestMapping("/players")
 public class PlayerController {
 
-
-    private final PlayerService playerService;
-
-    public PlayerController(PlayerService playerService){
-        this.playerService = playerService;
-    }
+    @Autowired
+    private PlayerService playerService;
 
     ////----> CRUD
 
@@ -69,7 +66,6 @@ public class PlayerController {
 
 
     ////FUNCIONALIDADES JUEGO
-
 
         //JUGADOR REALIZA TIRADA
 
