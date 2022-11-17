@@ -7,9 +7,9 @@ S5.02 - JUEGO DE DADOS
 * Registrar en dos tablas relacionadas con Spring --> https://www.youtube.com/watch?v=rKj1NhXuHuk
 * open bootcamp
 * java guides
-* CRUD completo -->  https://www.youtube.com/watch?v=z_dLYcQqSHI
-* SERIALIZABLE --> https://stackoverflow.com/questions/49003908/why-while-using-spring-boot-i-need-entities-to-be-serializable
-* 			       --> https://www.baeldung.com/jpa-entities-serializable
+* CRUD completo --> https://www.youtube.com/watch?v=z_dLYcQqSHI
+* SERIALIZABLE  --> https://stackoverflow.com/questions/49003908/why-while-using-spring-boot-i-need-entities-to-be-serializable
+* 			      
 
 
 --SQL
