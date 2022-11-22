@@ -8,8 +8,7 @@
 * open bootcamp
 * java guides
 * CRUD completo --> https://www.youtube.com/watch?v=z_dLYcQqSHI
-* SERIALIZABLE  --> https://stackoverflow.com/questions/49003908/why-while-using-spring-boot-i-need-entities-to-be-serializable
-* 			      
+* SERIALIZABLE  --> https://stackoverflow.com/questions/49003908/why-while-using-spring-boot-i-need-entities-to-be-serializable      
 
 
 # SQL
