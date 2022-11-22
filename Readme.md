@@ -1,8 +1,8 @@
 
-S5.02 - JUEGO DE DADOS
+# S5.02 - JUEGO DE DADOS
 
 
---LINKS DE AYUDA
+# LINKS DE AYUDA
 
 * Registrar en dos tablas relacionadas con Spring --> https://www.youtube.com/watch?v=rKj1NhXuHuk
 * open bootcamp
@@ -12,14 +12,14 @@ S5.02 - JUEGO DE DADOS
 * 			      
 
 
---SQL
+# SQL
 
 * https://www.youtube.com/watch?v=T3ohk1cvkVY
 * https://www.youtube.com/watch?v=f5bdUjEIbrg
 * https://www.youtube.com/watch?v=rKj1NhXuHuk
 
 
---SPRING SECURITY + JWT
+# SPRING SECURITY + JWT
 
 * Open Bootcamp
 * Java Guides
