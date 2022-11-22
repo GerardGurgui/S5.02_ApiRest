@@ -17,6 +17,8 @@
 * https://www.youtube.com/watch?v=T3ohk1cvkVY
 * https://www.youtube.com/watch?v=f5bdUjEIbrg
 * https://www.youtube.com/watch?v=rKj1NhXuHuk
+* https://www.bezkoder.com/spring-boot-jpa-crud-rest-api/
+* https://www.javaguides.net/2022/02/spring-data-jpa-one-to-many-unidirectional-mapping.html
 
 
 # SPRING SECURITY + JWT
