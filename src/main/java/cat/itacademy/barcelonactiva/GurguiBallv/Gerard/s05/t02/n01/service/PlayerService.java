@@ -3,10 +3,9 @@ package cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.service;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.DTO.PlayerDTO;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Player;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities.Launch;
-import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.ExistentEmailException;
-import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.ExistentUserNameException;
-import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.IdPlayerException;
-import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.PlayerNotFoundException;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.customizedExceptions.ExistentEmailException;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.customizedExceptions.ExistentUserNameException;
+import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.exceptions.customizedExceptions.PlayerNotFoundException;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.game.GameFunctions;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.mapper.DtoToPlayer;
 import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.repositories.PlayerRepository;
@@ -14,6 +13,7 @@ import cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.repositories.
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -46,7 +46,7 @@ public class PlayerService {
 
         if (existe && !playerEntity.getUsername().equalsIgnoreCase("Anónimo")){
 
-            throw new ExistentUserNameException("El nombre del jugador ya existe");
+            throw new ExistentUserNameException(HttpStatus.FOUND,"This user name is already taken");
 
         }
 
@@ -55,8 +55,6 @@ public class PlayerService {
         return playerRepository.save(playerEntity);
 
     }
-
-
 
     //--> READ
     public List<Player> findAllPlayers() {
@@ -72,7 +70,7 @@ public class PlayerService {
 
         if (jugadorOpt.isEmpty()) {
 
-            throw new PlayerNotFoundException("No existe el jugador con id " + id);
+            throw new PlayerNotFoundException(HttpStatus.NOT_FOUND,"No existe el jugador con id " + id);
 
         }
 
@@ -86,22 +84,17 @@ public class PlayerService {
 
         if (playerRepository.existsByUsername(playerDTO.getUsername())){
 
-            throw new ExistentUserNameException("El nombre del jugador ya existe");
+            throw new ExistentUserNameException(HttpStatus.FOUND,"El nombre del jugador ya existe");
         }
 
         if (playerRepository.existsByEmail(playerDTO.getEmail())){
 
-            throw new ExistentEmailException("El email ya existe");
-        }
-
-        if (id == null) {
-
-            throw new IdPlayerException("El id del jugador a actualizar no puede ser nulo");
+            throw new ExistentEmailException(HttpStatus.FOUND,"El email ya existe");
         }
 
         if (!playerRepository.existsById(id)) {
 
-            throw new PlayerNotFoundException("El jugador no existe");
+            throw new PlayerNotFoundException(HttpStatus.NOT_FOUND,"El jugador no existe");
         }
 
         Optional<Player> jugadorOpt = playerRepository.findById(id);
@@ -125,15 +118,11 @@ public class PlayerService {
 
         if (jugadorOpt.isEmpty()) {
 
-            throw new PlayerNotFoundException("No existe el jugador con id " + id);
+            throw new PlayerNotFoundException(HttpStatus.NOT_FOUND,"No existe el jugador con id " + id);
 
         }
 
-        //---- PENDIENTE
-        //PENDENT BORRAR TIRADAS-- comprobar primero si teine tiradas
-        //exception si no tiene
-
-        Set<Launch> launches = jugadorOpt.get().getTiradas();
+        Set<Launch> launches = jugadorOpt.get().getLaunches();
 
         for (Launch launch : launches) {
 
@@ -141,20 +130,12 @@ public class PlayerService {
 
         }
 
+        jugadorOpt.get().getLaunches().clear();
 
-//        Long ids;
-//
-//        for (Tirada tirada : jugadorOpt.get().getTiradas()) {
-//
-//            ids = tirada.getId();
-//            tirada = tiradaRepository.getById(ids);
-//
-//            tiradaRepository.delete(tirada);
-//
-//        }
+        playerRepository.save(jugadorOpt.get());
 
 
-        if (jugadorOpt.get().getTiradas().isEmpty()) {
+        if (jugadorOpt.get().getLaunches().isEmpty()) {
             log.warn("Se han eliminado correctamente las tiradas del jugador");
         }
 
@@ -174,7 +155,8 @@ public class PlayerService {
 
         //CAMBIAR POR EXCEPTION
         if (jugadorOpt.isEmpty()) {
-            log.warn("no existe el jugador");
+
+            throw new PlayerNotFoundException(HttpStatus.NOT_FOUND,"El jugador no existe");
         }
 
         Player player = jugadorOpt.get();

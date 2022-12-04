@@ -1,8 +1,13 @@
 package cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 
 @Entity
 @Table(name = "registro_tiradas")
@@ -20,39 +25,6 @@ public class Launch {
     public Launch() {
     }
 
-    public int getDado1() {
-        return dado1;
-    }
-
-    public void setDado1(int dado1) {
-        this.dado1 = dado1;
-    }
-
-    public int getDado2() {
-        return dado2;
-    }
-
-    public void setDado2(int dado2) {
-        this.dado2 = dado2;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getResultadoTirada() {
-        return resultadoTirada;
-    }
-
-    public void setResultadoTirada(int resultadoTirada) {
-        this.resultadoTirada = resultadoTirada;
-    }
-
-    // MILLOR TIRAR DADOS EN LA PROPIA CLASE DADOS
 
 
 }

@@ -1,11 +1,16 @@
 package cat.itacademy.barcelonactiva.GurguiBallv.Gerard.s05.t02.n01.entities;
 
 import com.sun.istack.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+
+@Getter
+@Setter
 
 @Entity
 @Table(name = "jugadores")
@@ -17,13 +22,13 @@ public class Player {
 
     @NotNull
     private String username;
-    private String email; //supuestamente recibe calificaciones en email, será DTO
+    private String email;
     private int puntuacion;
     private int victoria;
 
     @Column(name = "porcentaje_acierto")
     private int acierto;
-    private String password; // PER ENCRIPTAR SI DONA TEMPS
+    private String password;
 
     @Column(name = "fecha_registro")
     private LocalDate fechaRegistro;
@@ -36,7 +41,8 @@ public class Player {
     private Set<Launch> launches;
 
 
-    public Player() {
+    public Player(){
+
     }
 
     public Player(String username, String email, String password){
@@ -45,82 +51,7 @@ public class Player {
         this.password = password;
     }
 
-    ////
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-
-    public LocalDate getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(LocalDate fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public int getPuntuacion() {
-        return puntuacion;
-    }
-
-    public void setPuntuacion(int puntuacion) {
-        this.puntuacion = puntuacion;
-    }
-
-    public Set<Launch> getTiradas() {
-        return launches;
-    }
-
-    public void setTiradas(Set<Launch> launches) {
-        this.launches = launches;
-    }
-
-    public int getVictoria() {
-        return victoria;
-    }
-
-    public int getAcierto() {
-        return acierto;
-    }
-
-    public void setAcierto(int acierto) {
-        this.acierto = acierto;
-    }
-
-    public void setVictoria(int victoria) {
-        this.victoria = victoria;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    ////
     public void addTirada(Launch launch){
 
         if (launches == null){
@@ -129,9 +60,7 @@ public class Player {
 
         launches.add(launch);
 
-//        tirada.setJugador(this);
 
     }
-
 
 }

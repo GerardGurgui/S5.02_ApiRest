@@ -89,7 +89,7 @@ public class GameFunctions {
         //comparar total puntuacion con total tiradas??
         int puntuacion = player.getPuntuacion();
 
-        int tiradasRealizadas = player.getTiradas().size();
+        int tiradasRealizadas = player.getLaunches().size();
 
         return (puntuacion * 100)/ tiradasRealizadas;
 
@@ -124,7 +124,7 @@ public class GameFunctions {
 
         for (Player jugadorsIter : jugadores) {
 
-            totalLaunches = jugadorsIter.getTiradas();
+            totalLaunches = jugadorsIter.getLaunches();
             total += totalLaunches.size();
 
         }
