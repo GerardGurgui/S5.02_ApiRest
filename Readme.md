@@ -1,5 +1,5 @@
 
-# S5.02 - PROYECTO FINAL: Juego de dados 
+# S5.02 - PROYECTO FINAL: Juego de dados (SQL)
 
 ### Construir una Api Rest dónde registramos a jugadores para unirse a una partida de un juego de dados.
 ### Persistencia con MySql y mongoDb, implementación de Spring Security + autenticación de usuario con JWT
