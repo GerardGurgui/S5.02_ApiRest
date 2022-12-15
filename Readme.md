@@ -14,13 +14,6 @@
 * CRUD completo --> https://www.youtube.com/watch?v=z_dLYcQqSHI
 * SERIALIZABLE  --> https://stackoverflow.com/questions/49003908/why-while-using-spring-boot-i-need-entities-to-be-serializable     
 
-## MongoDb
-
-* https://docs.spring.io/spring-data/mongodb/docs/1.2.x/reference/html/mapping-chapter.html
-* https://www.baeldung.com/spring-data-mongodb-tutorial
-* https://lankydan.dev/2017/05/29/embedded-documents-with-spring-data-and-mongodb
-* https://www.javaguides.net/p/mongodb-tutorial.html
-
 
 ## SQL
 
