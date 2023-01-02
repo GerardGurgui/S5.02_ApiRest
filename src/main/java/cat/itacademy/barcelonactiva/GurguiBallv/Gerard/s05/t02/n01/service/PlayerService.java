@@ -110,7 +110,6 @@ public class PlayerService {
     }
 
 
-    //FALTAAAAA
     //--> DELETE TIRADAS 1 JUGADOR
     public void deleteTiradas(Long id) {
 
@@ -143,11 +142,7 @@ public class PlayerService {
 
 
     ////FUNCIONALIDADES JUEGO
-
-    //INICIO JUEGO
-
-    //REVISAR TIRAR DADOS FUERA DEL SERIVICO
-
+    
     //TIRAR DADOS - REGISTRO TIRADAS - PORCENTAJE
     public Player realizarTirada(Long id) {
 
